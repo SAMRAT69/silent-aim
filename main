@@ -1,6 +1,5 @@
 Playersaimbot = nil
 local mouse = game.Players.LocalPlayer:GetMouse()
-local guiservice = game:GetService("GuiService")
 local players = game:GetService("Players")
 local localPlayer = players.LocalPlayer
 local currentCamera = game:GetService("Workspace").CurrentCamera
@@ -116,6 +115,7 @@ Healthgreen.Size = UDim2.new(0, 155, 0, 8)
 HealthgreenCorner.Name = "HealthgreenCorner"
 HealthgreenCorner.Parent = Healthgreen
 
+-- Update circle position to follow the mouse
 function updateCircle(Fov, colorCircle)
    if circle.__OBJECT_EXISTS then
        circle.Transparency = 1
@@ -125,8 +125,9 @@ function updateCircle(Fov, colorCircle)
        circle.NumSides = 100
        circle.Radius = (Fov * 6) / 2
        circle.Filled = false
-       -- Adjust the circle position with GUI inset
-       circle.Position = Vector2.new(mouse.X, mouse.Y) + guiservice:GetGuiInset()
+
+       -- Setting the circle's position to exactly follow the mouse cursor
+       circle.Position = Vector2.new(mouse.X, mouse.Y)
    end
 end
 
@@ -182,25 +183,4 @@ spawn(function()
             end
         end
     end)
-end)
-
-game:GetService('UserInputService').InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Keyboard then 
-        if input.KeyCode == getgenv().setting['LockPlayersBind'] then 
-            getgenv().setting['LockPlayers'] = not getgenv().setting['LockPlayers']
-            loackplayerslabel.Text = "Lock Players | " .. tostring(getgenv().setting['LockPlayers'])
-        end
-    end
-end)
-
-game:GetService('UserInputService').InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Keyboard then 
-        if input.KeyCode == getgenv().setting['resetPlayersBind'] then 
-            Playersaimbot = nil
-            NamePlayers.Text = "Name | N/A"
-            HealthPlayers.Text = "Health | N/A"
-            Healthgreen:TweenSize(UDim2.new(1, 0, 0, 8), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.15)
-            ImageProfile.Image = ''
-        end
-    end
-end)
+end
